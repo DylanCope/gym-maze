@@ -13,7 +13,7 @@ class MazeEnv(gym.Env):
 
     ACTION = ["N", "S", "E", "W"]
 
-    def __init__(self, maze_file=None, maze_size=None, mode=None, enable_render=True):
+    def __init__(self, maze_file=None, maze_size=None, mode=None, enable_render=True, render_shape=(640, 640)):
 
         self.viewer = None
         self.enable_render = enable_render
@@ -21,7 +21,7 @@ class MazeEnv(gym.Env):
         if maze_file:
             self.maze_view = MazeView2D(maze_name="OpenAI Gym - Maze (%s)" % maze_file,
                                         maze_file_path=maze_file,
-                                        screen_size=(640, 640), 
+                                        screen_size=render_shape, 
                                         enable_render=enable_render)
         elif maze_size:
             if mode == "plus":
@@ -32,7 +32,7 @@ class MazeEnv(gym.Env):
                 num_portals = 0
 
             self.maze_view = MazeView2D(maze_name="OpenAI Gym - Maze (%d x %d)" % maze_size,
-                                        maze_size=maze_size, screen_size=(640, 640),
+                                        maze_size=maze_size, screen_size=render_shape,
                                         has_loops=has_loops, num_portals=num_portals,
                                         enable_render=enable_render)
         else:
