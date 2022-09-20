@@ -205,7 +205,7 @@ class MazeView2D:
 
         pygame.draw.circle(self.maze_layer, colour + (transparency,), (x, y), r)
 
-    def __draw_entrance(self, colour=(0, 0, 150), transparency=235):
+    def __draw_entrance(self, colour=(75, 191, 36), transparency=255):
 
         self.__colour_cell(self.entrance, colour=colour, transparency=transparency)
 
