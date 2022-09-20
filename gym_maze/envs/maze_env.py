@@ -13,10 +13,18 @@ class MazeEnv(gym.Env):
 
     ACTION = ["N", "S", "E", "W"]
 
-    def __init__(self, maze_file=None, maze_size=None, mode=None, enable_render=True, render_shape=(640, 640)):
+    def __init__(self,
+                 maze_file=None,
+                 maze_size=None,
+                 goal_reward=1,
+                 step_cost=None,  # if none uses default based on maze size
+                 mode=None,
+                 enable_render=True,
+                 render_shape=(640, 640)):
 
         self.viewer = None
         self.enable_render = enable_render
+        
 
         if maze_file:
             self.maze_view = MazeView2D(maze_name="OpenAI Gym - Maze (%s)" % maze_file,
@@ -51,6 +59,10 @@ class MazeEnv(gym.Env):
         # initial condition
         self.state = None
         self.steps_beyond_done = None
+        
+        # Reward variables
+        self.goal_reward = goal_reward
+        self.step_cost = step_cost or 0.1/(self.maze_size[0]*self.maze_size[1])
 
         # Simulation related variables.
         self.seed()
@@ -77,10 +89,10 @@ class MazeEnv(gym.Env):
             self.maze_view.move_robot(action)
 
         if np.array_equal(self.maze_view.robot, self.maze_view.goal):
-            reward = 1
+            reward = self.goal_reward
             done = True
         else:
-            reward = -0.1/(self.maze_size[0]*self.maze_size[1])
+            reward = -self.step_cost
             done = False
 
         self.state = self.maze_view.robot
