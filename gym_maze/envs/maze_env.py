@@ -19,6 +19,7 @@ class MazeEnv(gym.Env):
                  goal_reward=1,
                  step_cost=None,  # if none uses default based on maze size
                  mode=None,
+                 generate_new_maze_on_reset=False,
                  enable_render=True,
                  render_shape=(640, 640)):
 
@@ -28,6 +29,7 @@ class MazeEnv(gym.Env):
         self.maze_size = maze_size
         self.mode = mode
         self.render_shape = render_shape
+        self.generate_new_maze_on_reset = generate_new_maze_on_reset
         
         self.maze_view = None
         self.initialise_maze_view()
@@ -109,6 +111,9 @@ class MazeEnv(gym.Env):
         return self.state, reward, done, info
 
     def reset(self):
+        if self.state is not None and self.generate_new_maze_on_reset:
+            self.initialise_maze_view()
+
         self.maze_view.reset_robot()
         self.state = np.zeros(2)
         self.steps_beyond_done = None
