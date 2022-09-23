@@ -24,27 +24,13 @@ class MazeEnv(gym.Env):
 
         self.viewer = None
         self.enable_render = enable_render
+        self.maze_file = maze_file
+        self.maze_size = maze_size
+        self.mode = mode
+        self.render_shape = render_shape
         
-
-        if maze_file:
-            self.maze_view = MazeView2D(maze_name="OpenAI Gym - Maze (%s)" % maze_file,
-                                        maze_file_path=maze_file,
-                                        screen_size=render_shape, 
-                                        enable_render=enable_render)
-        elif maze_size:
-            if mode == "plus":
-                has_loops = True
-                num_portals = int(round(min(maze_size)/3))
-            else:
-                has_loops = False
-                num_portals = 0
-
-            self.maze_view = MazeView2D(maze_name="OpenAI Gym - Maze (%d x %d)" % maze_size,
-                                        maze_size=maze_size, screen_size=render_shape,
-                                        has_loops=has_loops, num_portals=num_portals,
-                                        enable_render=enable_render)
-        else:
-            raise AttributeError("One must supply either a maze_file path (str) or the maze_size (tuple of length 2)")
+        self.maze_view = None
+        self.initialise_maze_view()
 
         self.maze_size = self.maze_view.maze_size
 
@@ -70,6 +56,27 @@ class MazeEnv(gym.Env):
 
         # Just need to initialize the relevant attributes
         self.configure()
+
+    def initialise_maze_view(self):
+        if self.maze_file:
+            self.maze_view = MazeView2D(maze_name="OpenAI Gym - Maze (%s)" % self.maze_file,
+                                        maze_file_path=self.maze_file,
+                                        screen_size=self.render_shape, 
+                                        enable_render=self.enable_render)
+        elif self.maze_size:
+            if self.mode == "plus":
+                has_loops = True
+                num_portals = int(round(min(self.maze_size)/3))
+            else:
+                has_loops = False
+                num_portals = 0
+
+            self.maze_view = MazeView2D(maze_name="OpenAI Gym - Maze (%d x %d)" % self.maze_size,
+                                        maze_size=self.maze_size, screen_size=self.render_shape,
+                                        has_loops=has_loops, num_portals=num_portals,
+                                        enable_render=self.enable_render)
+        else:
+            raise AttributeError("One must supply either a maze_file path (str) or the maze_size (tuple of length 2)")
 
     def __del__(self):
         if self.enable_render is True:
