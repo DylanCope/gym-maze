@@ -54,9 +54,6 @@ class MazeView2D:
             self.maze_layer = pygame.Surface(self.screen.get_size()).convert_alpha()
             self.maze_layer.fill((0, 0, 0, 0,))
 
-            # show the maze
-            self.__draw_maze()
-
             # show the portals
             self.__draw_portals()
 
@@ -68,6 +65,9 @@ class MazeView2D:
 
             # show the goal
             self.__draw_goal()
+            
+            # show the maze
+            self.__draw_maze()
 
     def update(self, mode="human"):
         try:
@@ -126,7 +126,7 @@ class MazeView2D:
             self.__draw_goal()
             self.__draw_portals()
             self.__draw_robot()
-
+            self.__draw_maze()
 
             # update the screen
             self.screen.blit(self.background, (0, 0))
