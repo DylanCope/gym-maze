@@ -16,6 +16,7 @@ class MazeView2D:
         self.clock = pygame.time.Clock()
         self.__game_over = False
         self.__enable_render = enable_render
+        self.line_width = 1
 
         # Load a maze
         if maze_file_path is None:
@@ -147,12 +148,12 @@ class MazeView2D:
         # drawing the horizontal lines
         for y in range(self.maze.MAZE_H + 1):
             pygame.draw.line(self.maze_layer, line_colour, (0, y * self.CELL_H),
-                             (self.SCREEN_W, y * self.CELL_H))
+                             (self.SCREEN_W, y * self.CELL_H), width=self.line_width)
 
         # drawing the vertical lines
         for x in range(self.maze.MAZE_W + 1):
             pygame.draw.line(self.maze_layer, line_colour, (x * self.CELL_W, 0),
-                             (x * self.CELL_W, self.SCREEN_H))
+                             (x * self.CELL_W, self.SCREEN_H), width=self.line_width)
 
         # breaking the walls
         for x in range(len(self.maze.maze_cells)):
@@ -192,7 +193,7 @@ class MazeView2D:
             else:
                 raise ValueError("The only valid directions are (N, S, E, W).")
 
-            pygame.draw.line(self.maze_layer, colour, line_head, line_tail)
+            pygame.draw.line(self.maze_layer, colour, line_head, line_tail, width=self.line_width)
 
     def __draw_robot(self, colour=(0, 0, 150), transparency=255):
 
