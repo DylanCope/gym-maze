@@ -138,6 +138,20 @@ class MazeView2D:
 
             return np.flipud(np.rot90(pygame.surfarray.array3d(pygame.display.get_surface())))
 
+    def is_edge_wall(self, cell_start: tuple, direction: str) -> bool:
+        start_x, start_y = cell_start
+        if direction == 'N':
+            end_x, end_y = start_x, start_y - 1
+        elif direction == 'S':
+            end_x, end_y = start_x, start_y + 1
+        elif direction == 'E':
+            end_x, end_y = start_x + 1, start_y
+        elif direction == 'W':
+            end_x, end_y = start_x - 1, start_y
+
+        maze_width, maze_height = self.maze.maze_size
+        return end_x < 0 or end_x >= maze_width or end_y < 0 or end_y >= maze_height:
+
     def is_wall(self, cell_start: tuple, direction: str) -> bool:
         start_x, start_y = cell_start
         if direction == 'N':
@@ -181,7 +195,7 @@ class MazeView2D:
 
         # breaking the walls
         for x in range(len(self.maze.maze_cells)):
-            for y in range (len(self.maze.maze_cells[x])):
+            for y in range(len(self.maze.maze_cells[x])):
                 # check the which walls are open in each cell
                 walls_status = self.maze.get_walls_status(self.maze.maze_cells[x, y])
                 dirs = ''.join(d for d in 'NESW' if self.is_wall((x, y), d))
@@ -213,8 +227,9 @@ class MazeView2D:
                 line_tail = (dx + self.CELL_W, dy + self.CELL_H - 1)
             else:
                 raise ValueError("The only valid directions are (N, S, E, W).")
-
-            pygame.draw.line(self.maze_layer, colour, line_head, line_tail, width=self.line_width)
+            
+            width = 2*self.line_width if self.is_edge_wall((x, y), dir) else self.line_width
+            pygame.draw.line(self.maze_layer, colour, line_head, line_tail, width=width)
 
     def __draw_robot(self, colour=(0, 0, 150), transparency=255):
 
