@@ -180,17 +180,17 @@ class MazeView2D:
 
         for dir in dirs:
             if dir == "S":
-                line_head = (dx + self.line_width, dy + self.CELL_H)
-                line_tail = (dx + self.CELL_W - self.line_width, dy + self.CELL_H)
+                line_head = (dx, dy + self.CELL_H)
+                line_tail = (dx + self.CELL_W, dy + self.CELL_H)
             elif dir == "N":
-                line_head = (dx + self.line_width, dy)
-                line_tail = (dx + self.CELL_W - self.line_width, dy)
+                line_head = (dx, dy)
+                line_tail = (dx + self.CELL_W, dy)
             elif dir == "W":
-                line_head = (dx, dy + self.line_width)
-                line_tail = (dx, dy + self.CELL_H - self.line_width)
+                line_head = (dx, dy)
+                line_tail = (dx, dy + self.CELL_H)
             elif dir == "E":
-                line_head = (dx + self.CELL_W, dy + self.line_width)
-                line_tail = (dx + self.CELL_W, dy + self.CELL_H - self.line_width)
+                line_head = (dx + self.CELL_W, dy)
+                line_tail = (dx + self.CELL_W, dy + self.CELL_H)
             else:
                 raise ValueError("The only valid directions are (N, S, E, W).")
 
