@@ -150,7 +150,7 @@ class MazeView2D:
             end_x, end_y = start_x - 1, start_y
 
         maze_width, maze_height = self.maze.maze_size
-        return end_x < 0 or end_x >= maze_width or end_y < 0 or end_y >= maze_height:
+        return end_x < 0 or end_x >= maze_width or end_y < 0 or end_y >= maze_height
 
     def is_wall(self, cell_start: tuple, direction: str) -> bool:
         start_x, start_y = cell_start
