@@ -138,6 +138,29 @@ class MazeView2D:
 
             return np.flipud(np.rot90(pygame.surfarray.array3d(pygame.display.get_surface())))
 
+    def is_wall(self, cell_start: tuple, direction: str) -> bool:
+        start_x, start_y = cell_start
+        if direction == 'N':
+            end_x, end_y = start_x, start_y - 1
+            return_dir = 'S'
+        elif direction == 'S':
+            end_x, end_y = start_x, start_y + 1
+            return_dir = 'N'
+        elif direction == 'E':
+            end_x, end_y = start_x + 1, start_y
+            return_dir = 'W'
+        elif direction == 'W':
+            end_x, end_y = start_x - 1, start_y
+            return_dir = 'E'
+
+        maze_width, maze_height = self.maze.maze_size
+        if end_x < 0 or end_x >= maze_width or end_y < 0 or end_y >= maze_height:
+            return True
+
+        start_status = self.maze.get_walls_status(self.maze.maze_cells[start_x, start_y])
+        end_status = self.maze.get_walls_status(self.maze.maze_cells[end_x, end_y])
+        return not start_status[direction] and not end_status[return_dir]
+
     def __draw_maze(self):
         
         if self.__enable_render is False:
@@ -161,10 +184,7 @@ class MazeView2D:
             for y in range (len(self.maze.maze_cells[x])):
                 # check the which walls are open in each cell
                 walls_status = self.maze.get_walls_status(self.maze.maze_cells[x, y])
-                dirs = ""
-                for dir, open in walls_status.items():
-                    if not open:
-                        dirs += dir
+                dirs = ''.join(d for d in 'NESW' if self.is_wall((x, y), d))
                 self.__cover_walls(x, y, dirs, colour=wall_colour)
 
     def __cover_walls(self, x, y, dirs, colour=(0, 0, 255, 15)):
