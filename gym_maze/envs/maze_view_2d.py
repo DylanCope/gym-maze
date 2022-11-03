@@ -122,6 +122,9 @@ class MazeView2D:
 
     def __view_update(self, mode="human"):
         if not self.__game_over:
+            self.background.fill((255, 255, 255))
+            self.maze_layer.fill((0, 0, 0, 0,))
+
             # update the robot's position
             self.__draw_entrance()
             self.__draw_goal()
