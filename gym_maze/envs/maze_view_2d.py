@@ -130,6 +130,7 @@ class MazeView2D:
             self.__draw_maze()
 
             # update the screen
+            self.screen.fill((255, 255, 255))
             self.screen.blit(self.background, (0, 0))
             self.screen.blit(self.maze_layer,(0, 0))
 
