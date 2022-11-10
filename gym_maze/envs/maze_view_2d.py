@@ -11,7 +11,7 @@ class MazeView2D:
                  has_loops=False, num_portals=0, enable_render=True):
 
         # PyGame configurations
-        pygame.init()
+        pygame.display.init()
         pygame.display.set_caption(maze_name)
         self.clock = pygame.time.Clock()
         self.__game_over = False
