@@ -10,10 +10,7 @@ class MazeView2D:
                  maze_size=(30, 30), screen_size=(600, 600),
                  has_loops=False, num_portals=0, enable_render=True):
 
-        # PyGame configurations
-        pygame.display.init()
-        pygame.display.set_caption(maze_name)
-        self.clock = pygame.time.Clock()
+
         self.__game_over = False
         self.__enable_render = enable_render
         self.line_width = 1
@@ -32,10 +29,6 @@ class MazeView2D:
             self.__maze = Maze(maze_cells=Maze.load_maze(maze_file_path))
 
         self.maze_size = self.__maze.maze_size
-        if self.__enable_render is True:
-            # to show the right and bottom border
-            self.screen = pygame.display.set_mode(screen_size)
-            self.__screen_size = tuple(map(sum, zip(screen_size, (-1, -1))))
 
         # Set the starting point
         self.__entrance = np.zeros(2, dtype=int)
@@ -46,7 +39,16 @@ class MazeView2D:
         # Create the Robot
         self.__robot = self.entrance
 
-        if self.__enable_render is True:
+        if self.__enable_render:
+            # PyGame configurations
+            pygame.display.init()
+            pygame.display.set_caption(maze_name)
+            self.clock = pygame.time.Clock()
+
+            # to show the right and bottom border
+            self.screen = pygame.display.set_mode(screen_size)
+            self.__screen_size = tuple(map(sum, zip(screen_size, (-1, -1))))
+
             # Create a background
             self.background = pygame.Surface(self.screen.get_size()).convert()
             self.background.fill((255, 255, 255))
@@ -84,9 +86,9 @@ class MazeView2D:
     def quit_game(self):
         try:
             self.__game_over = True
-            if self.__enable_render is True:
+            if self.__enable_render:
                 pygame.display.quit()
-            pygame.quit()
+                pygame.quit()
         except Exception:
             pass
 
@@ -181,7 +183,7 @@ class MazeView2D:
 
     def __draw_maze(self):
         
-        if self.__enable_render is False:
+        if not self.__enable_render:
             return
         
         wall_colour = (0, 0, 0, 255)
@@ -207,7 +209,7 @@ class MazeView2D:
 
     def __cover_walls(self, x, y, dirs, colour=(0, 0, 255, 15)):
 
-        if self.__enable_render is False:
+        if not self.__enable_render:
             return
         
         dx = x * self.CELL_W
@@ -237,7 +239,7 @@ class MazeView2D:
 
     def __draw_robot(self, colour=(0, 0, 150), transparency=255):
 
-        if self.__enable_render is False:
+        if not self.__enable_render:
             return
         
         x = int(self.__robot[0] * self.CELL_W + self.CELL_W * 0.5 + 0.5)
@@ -256,7 +258,7 @@ class MazeView2D:
 
     def __draw_portals(self, transparency=160):
 
-        if self.__enable_render is False:
+        if not self.__enable_render:
             return
         
         colour_range = np.linspace(0, 255, len(self.maze.portals), dtype=int)
@@ -269,7 +271,7 @@ class MazeView2D:
 
     def __colour_cell(self, cell, colour, transparency):
 
-        if self.__enable_render is False:
+        if not self.__enable_render:
             return
 
         if not (isinstance(cell, (list, tuple, np.ndarray)) and len(cell) == 2):
