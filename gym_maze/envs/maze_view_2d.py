@@ -13,7 +13,7 @@ class MazeView2D:
 
         self.__game_over = False
         self.__enable_render = enable_render
-        self.line_width = 1
+        self.line_width = 10
 
         # Load a maze
         if maze_file_path is None:
