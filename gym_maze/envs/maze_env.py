@@ -21,6 +21,7 @@ class MazeEnv(gym.Env):
                  mode=None,
                  generate_new_maze_on_reset=False,
                  enable_render=True,
+                 seed=None,
                  render_shape=(640, 640)):
 
         self.viewer = None
@@ -53,7 +54,8 @@ class MazeEnv(gym.Env):
         self.step_cost = step_cost or 0.1/(self.maze_size[0]*self.maze_size[1])
 
         # Simulation related variables.
-        self.seed()
+        self._seed = seed
+        self.seed(seed=seed)
         self.reset()
 
         # Just need to initialize the relevant attributes
@@ -88,8 +90,11 @@ class MazeEnv(gym.Env):
         self.display = display
 
     def seed(self, seed=None):
-        self.np_random, seed = seeding.np_random(seed)
-        return [seed]
+        self.np_random, self._seed = seeding.np_random(seed)
+        return [self._seed]
+    
+    def get_seed(self):
+        return self._seed
 
     def step(self, action):
         if isinstance(action, int):
