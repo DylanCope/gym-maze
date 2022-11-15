@@ -31,6 +31,10 @@ class MazeEnv(gym.Env):
         self.mode = mode
         self.render_shape = render_shape
         self.generate_new_maze_on_reset = generate_new_maze_on_reset
+
+        # Simulation related variables.
+        self._seed = seed
+        self.seed(seed=seed)
         
         self.maze_view = None
         self.initialise_maze_view()
@@ -53,11 +57,7 @@ class MazeEnv(gym.Env):
         self.goal_reward = goal_reward
         self.step_cost = step_cost or 0.1/(self.maze_size[0]*self.maze_size[1])
 
-        # Simulation related variables.
-        self._seed = seed
-        self.seed(seed=seed)
         self.reset()
-
         # Just need to initialize the relevant attributes
         self.configure()
 
@@ -83,7 +83,7 @@ class MazeEnv(gym.Env):
             raise AttributeError("One must supply either a maze_file path (str) or the maze_size (tuple of length 2)")
 
     def __del__(self):
-        if self.enable_render is True:
+        if self.enable_render:
             self.maze_view.quit_game()
 
     def configure(self, display=None):
@@ -117,6 +117,7 @@ class MazeEnv(gym.Env):
 
     def reset(self):
         if self.state is not None and self.generate_new_maze_on_reset:
+            self.seed(seed=self._seed + 1)
             self.initialise_maze_view()
 
         self.maze_view.reset_robot()
