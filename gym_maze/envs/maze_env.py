@@ -50,14 +50,15 @@ class MazeEnv(gym.Env):
         self.observation_space = spaces.Box(low, high, dtype=np.int64)
 
         # initial condition
-        self.state = None
+        self.maze_view.reset_robot()
+        self.state = np.zeros(2)
         self.steps_beyond_done = None
-        
+        self.done = False
+
         # Reward variables
         self.goal_reward = goal_reward
         self.step_cost = step_cost or 0.1/(self.maze_size[0]*self.maze_size[1])
 
-        self.reset()
         # Just need to initialize the relevant attributes
         self.configure()
 
