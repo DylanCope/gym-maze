@@ -1,4 +1,5 @@
 import numpy as np
+import random
 
 import gym
 from gym import error, spaces, utils
@@ -92,6 +93,7 @@ class MazeEnv(gym.Env):
 
     def seed(self, seed=None):
         self.np_random, self._seed = seeding.np_random(seed)
+        random.seed(self._seed)
         return [self._seed]
     
     def get_seed(self):
