@@ -610,8 +610,6 @@ class Portal:
 
 if __name__ == "__main__":
 
-    maze = MazeView2D(screen_size= (500, 500), maze_size=(10,10))
+    maze = MazeView2D(screen_size=(500, 500), maze_size=(10, 10))
     maze.update()
     input("Enter any key to quit.")
-
-
