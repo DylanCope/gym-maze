@@ -133,6 +133,9 @@ class MazeEnv(gym.Env):
         return self.maze_view.game_over
 
     def render(self, mode="human", close=False):
+        if not self.enable_render:
+            return np.zeros((*self.render_shape, 3))
+
         if close:
             self.maze_view.quit_game()
 
